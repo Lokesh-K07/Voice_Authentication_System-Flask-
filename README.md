@@ -28,9 +28,10 @@ The Voice Authentication System enhances traditional password-based login system
 ### 🔊 Voice-Based Login:
 - Authenticate via password + voice answers to security questions.
 - One voice sample per question for verification.
+- Login by answering 3 security questions with voice, it needs 2/3 Match for successful login.
 
 ### 🔁 Forgot Password:
-- Reset password by answering 3 security questions with voice.
+- Reset password by answering 3 security questions with voice, it needs 3/3 Match for successful login
 
 ### 🎨 Responsive UI:
 - Dark/light theme toggle.
