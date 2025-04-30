@@ -9,6 +9,12 @@ A secure, web-based Voice Authentication System that combines password-based aut
 
 ---
 
+ <p align="center">
+     <img src="PS.png" alt="PS">
+   </p>
+
+---
+
 ## Project Overview
  <p align="center">
      <img src="main1.png" alt="main1" height="300" width="500">
