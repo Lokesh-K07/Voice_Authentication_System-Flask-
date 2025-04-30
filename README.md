@@ -1,6 +1,10 @@
 
 # Voice Authentication System
 
+ <p align="center">
+     <img src="main.png" alt="main" height="300" width="600">
+   </p>
+
 A secure, web-based Voice Authentication System that combines password-based authentication, voice biometrics, and security question verification to provide a robust user authentication mechanism. Users register with their voice samples, answer security questions, and authenticate using voice recognition powered by machine learning. This project was developed as a final-year project to demonstrate advanced concepts in web development, audio processing, and machine learning.
 
 ---
@@ -167,15 +171,34 @@ The Voice Authentication System enhances traditional password-based login system
 
 _Replace placeholders with real screenshots:_
 
-- Home Page  
-- Registration  
+- Home Page
+     <p align="center">
+  <img src="1.png" alt="1" height="300" width="600">
+   </p>
+- Registration
+  <p align="center">
+  <img src="register.png" alt="2" height="300" width="600">
+   </p>
+   <p align="center">
+     <img src="register1.png" alt="3" height="300" width="600">
+   </p>
 - Login  
+   <p align="center">
+     <img src="login.png" alt="4" height="300" width="600">
+   </p>
+   <p align="center">
+     <img src="login1.png" alt="5" height="300" width="600">
+   </p>
 - Forgot Password  
+   <p align="center">
+     <img src="fp.png" alt="6" height="300" width="600">
+   </p>
 - Dashboard  
+   <p align="center">
+     <img src="welcome.png" alt="7" height="300" width="600">
+   </p>
 
 ---
-
-## Challenges and Solutions
 
 ## Challenges and Solutions
 
