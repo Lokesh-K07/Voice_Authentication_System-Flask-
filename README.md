@@ -2,7 +2,7 @@
 # Voice Authentication System
 
  <p align="center">
-     <img src="main.png" alt="main" height="300" width="600">
+     <img src="main.jpg" alt="main" height="300" width="600">
    </p>
 
 A secure, web-based Voice Authentication System that combines password-based authentication, voice biometrics, and security question verification to provide a robust user authentication mechanism. Users register with their voice samples, answer security questions, and authenticate using voice recognition powered by machine learning. This project was developed as a final-year project to demonstrate advanced concepts in web development, audio processing, and machine learning.
