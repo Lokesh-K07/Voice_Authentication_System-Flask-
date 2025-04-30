@@ -24,6 +24,8 @@ This project implements a voice-based authentication system that integrates spea
 
 The Voice Authentication System enhances traditional password-based login systems by incorporating voice biometrics. Users register by providing a user ID, password, and recording voice samples for three security questions. During login, users verify their identity using a password and voice input. A forgot-password feature allows password reset via voice verification.
 
+---
+
 ### Highlights:
 
 - **Web Development**: Flask-based responsive web application.  
