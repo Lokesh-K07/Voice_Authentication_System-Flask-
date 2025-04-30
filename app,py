@@ -1,0 +1,276 @@
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+import os
+import speech_recognition as sr
+import logging
+import soundfile as sf
+import numpy as np
+from voice_auth import VoiceAuth
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'  # Replace with a secure key
+app.config['UPLOAD_FOLDER'] = 'temp'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Set up logging
+logging.basicConfig(filename='app.log', level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Initialize VoiceAuth
+voice_auth = VoiceAuth()
+
+# Initialize SpeechRecognizer globally
+recognizer = sr.Recognizer()
+
+# Energy threshold for silence detection (consistent with voice_auth.py)
+ENERGY_THRESHOLD = 0.0001
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/record_audio/<user_id>/<int:question_idx>/<int:sample_idx>', methods=['POST'])
+def record_audio(user_id, question_idx, sample_idx):
+    global recognizer
+    try:
+        with sr.Microphone() as source:
+            recognizer.adjust_for_ambient_noise(source, duration=0.7)
+            audio = recognizer.listen(source, timeout=10, phrase_time_limit=10)
+
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_q{question_idx}_s{sample_idx}.wav')
+        with open(temp_path, 'wb') as f:
+            f.write(audio.get_wav_data())
+
+        audio_data, sample_rate = sf.read(temp_path)
+        if isinstance(audio_data, np.ndarray) and len(audio_data.shape) > 1:
+            audio_data = np.mean(audio_data, axis=1)
+        energy = np.mean(np.abs(audio_data))
+        if energy < ENERGY_THRESHOLD:
+            os.remove(temp_path)
+            return jsonify({'success': False, 'message': 'No speech detected. Please try again.', 'retry': True})
+
+        logging.info(f"Audio saved to {temp_path}")
+        return jsonify({'success': True, 'audio_path': temp_path})
+    except sr.WaitTimeoutError:
+        return jsonify({'success': False, 'message': 'No speech detected within 10 seconds.', 'retry': True})
+    except Exception as e:
+        logging.error(f"Recording error: {str(e)}")
+        return jsonify({'success': False, 'message': f'Recording error: {str(e)}'})
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    else:
+        user_id = request.form.get('user_id')
+        password = request.form.get('password')
+
+        selected_questions = [request.form.get(f'question_{i+1}') for i in range(3)]
+        user_answers = {q: [request.form.get(f'answer_{i+1}')] for i, q in enumerate(selected_questions)}
+        audio_files = []
+        for i in range(3):
+            question_files = [os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_q{i}_s{j}.wav') for j in range(10)]
+            audio_files.append(question_files)
+
+        logging.info(f"Registering user {user_id} with audio files: {audio_files}")
+        success, message = voice_auth.register(user_id, password, selected_questions, user_answers, audio_files)
+        if not success:
+            for file_list in audio_files:
+                for file_path in file_list:
+                    if os.path.exists(file_path):
+                        os.remove(file_path)
+        return jsonify({'success': success, 'message': message})
+
+@app.route('/validate_user_details', methods=['POST'])
+def validate_user_details():
+    user_id = request.form.get('user_id')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+
+    # Check if passwords match
+    if password != confirm_password:
+        return jsonify({'success': False, 'message': 'Passwords do not match.'})
+
+    # Check if user ID already exists
+    if voice_auth.check_user_exists(user_id):
+        return jsonify({'success': False, 'message': 'User ID already exists. Please choose a different one.'})
+
+    # Validate password
+    success, message = voice_auth.validate_password(password)
+    if not success:
+        return jsonify({'success': False, 'message': message})
+    return jsonify({'success': True, 'message': 'User details validated successfully.'})
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        user_id = request.form.get('user_id')
+        password = request.form.get('password')
+        success, message, questions = voice_auth.login(user_id, password)
+        if success:
+            session['user_id'] = user_id
+            return jsonify({'success': True, 'message': message, 'questions': questions})
+        return jsonify({'success': False, 'message': message})
+
+@app.route('/login/record/<user_id>/<int:question_idx>', methods=['POST'])
+def login_record(user_id, question_idx):
+    global recognizer
+    try:
+        with sr.Microphone() as source:
+            recognizer.adjust_for_ambient_noise(source, duration=0.7)
+            audio = recognizer.listen(source, timeout=10, phrase_time_limit=10)
+
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_verify_q{question_idx}.wav')
+        with open(temp_path, 'wb') as f:
+            f.write(audio.get_wav_data())
+        
+        audio_data, sample_rate = sf.read(temp_path)
+        if isinstance(audio_data, np.ndarray) and len(audio_data.shape) > 1:
+            audio_data = np.mean(audio_data, axis=1)
+        energy = np.mean(np.abs(audio_data))
+        if energy < ENERGY_THRESHOLD:
+            os.remove(temp_path)
+            return jsonify({'success': False, 'message': 'No speech detected. Please try again.', 'retry': True})
+
+        logging.info(f"Login audio saved to {temp_path}")
+        return jsonify({'success': True, 'audio_path': temp_path})
+    except sr.WaitTimeoutError:
+        return jsonify({'success': False, 'message': 'No speech detected within 10 seconds.', 'retry': True})
+    except Exception as e:
+        logging.error(f"Recording error: {str(e)}")
+        return jsonify({'success': False, 'message': f'Recording error: {str(e)}'})
+
+@app.route('/login/verify', methods=['POST'])
+def login_verify():
+    user_id = request.form.get('user_id')
+    answers = [request.form.get(f'answer_{i}').lower() for i in range(3)]
+
+    audio_files = []
+    for i in range(3):
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_verify_q{i}.wav')
+        if os.path.exists(temp_path):
+            audio_files.append(temp_path)
+    logging.info(f"Login verify audio files: {audio_files}")
+
+    success, message = voice_auth.verify(user_id, answers, audio_files, is_login=True)
+    if not success:
+        for file_path in audio_files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+    if success:
+        session['user_id'] = user_id
+        return jsonify({'success': True, 'message': 'You have successfully logged in using voice authentication.', 'redirect': url_for('success')})
+    return jsonify({'success': False, 'message': message})
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'GET':
+        return render_template('forgot_password.html')
+    else:
+        user_id = request.form.get('user_id')
+        success, message, questions = voice_auth.forgot_password(user_id)
+        if success:
+            session['user_id'] = user_id
+            return jsonify({'success': True, 'message': message, 'questions': questions})
+        return jsonify({'success': False, 'message': message})
+
+@app.route('/forgot_password/record/<user_id>/<int:question_idx>', methods=['POST'])
+def forgot_password_record(user_id, question_idx):
+    global recognizer
+    try:
+        with sr.Microphone() as source:
+            recognizer.adjust_for_ambient_noise(source, duration=0.7)
+            audio = recognizer.listen(source, timeout=10, phrase_time_limit=10)
+
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_forgot_q{question_idx}.wav')
+        with open(temp_path, 'wb') as f:
+            f.write(audio.get_wav_data())
+        
+        audio_data, sample_rate = sf.read(temp_path)
+        if isinstance(audio_data, np.ndarray) and len(audio_data.shape) > 1:
+            audio_data = np.mean(audio_data, axis=1)
+        energy = np.mean(np.abs(audio_data))
+        if energy < ENERGY_THRESHOLD:
+            os.remove(temp_path)
+            return jsonify({'success': False, 'message': 'No speech detected. Please try again.', 'retry': True})
+
+        logging.info(f"Forgot password audio saved to {temp_path}")
+        return jsonify({'success': True, 'audio_path': temp_path})
+    except sr.WaitTimeoutError:
+        return jsonify({'success': False, 'message': 'No speech detected within 10 seconds.', 'retry': True})
+    except Exception as e:
+        logging.error(f"Recording error: {str(e)}")
+        return jsonify({'success': False, 'message': f'Recording error: {str(e)}'})
+
+@app.route('/forgot_password/verify', methods=['POST'])
+def forgot_password_verify():
+    user_id = request.form.get('user_id')
+    answers = [request.form.get(f'answer_{i}').lower() for i in range(3)]
+
+    audio_files = []
+    for i in range(3):
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{user_id}_forgot_q{i}.wav')
+        if os.path.exists(temp_path):
+            audio_files.append(temp_path)
+    logging.info(f"Forgot password verify audio files: {audio_files}")
+
+    success, message = voice_auth.verify(user_id, answers, audio_files, is_login=False)
+    for file_path in audio_files:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+    if success:
+        return jsonify({'success': True, 'message': message})
+    return jsonify({'success': False, 'message': message})
+
+@app.route('/forgot_password/reset', methods=['POST'])
+def forgot_password_reset():
+    user_id = request.form.get('user_id')
+    new_password = request.form.get('new_password')
+    confirm_new_password = request.form.get('confirm_new_password')
+
+    if not new_password or not confirm_new_password:
+        return jsonify({'success': False, 'message': 'Both new password and confirmation are required.'})
+
+    if new_password != confirm_new_password:
+        return jsonify({'success': False, 'message': 'Passwords do not match.'})
+
+    success, message = voice_auth.reset_password(user_id, new_password)
+    if success:
+        session.pop('user_id', None)
+        return jsonify({'success': True, 'message': 'Password reset successful.', 'redirect': url_for('login')})
+    return jsonify({'success': False, 'message': message})
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return render_template('dashboard.html', user_id=session['user_id'])
+
+@app.route('/success')
+def success():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return render_template('success.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('index'))
+
+@app.route('/cancel', methods=['POST'])
+def cancel():
+    context = request.form.get('context', '')
+    temp_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.startswith(f"{session.get('user_id', '')}")]
+    for file in temp_files:
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], file))
+    if context == 'questionsSection':
+        return jsonify({'success': True, 'redirect': url_for('login')})
+    elif context == 'resetPasswordSection':
+        return jsonify({'success': True, 'redirect': url_for('login')})
+    return jsonify({'success': True, 'redirect': url_for('index')})
+
+if __name__ == '__main__':
+    app.run(debug=True)
