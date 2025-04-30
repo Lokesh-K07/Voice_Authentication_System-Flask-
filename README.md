@@ -7,6 +7,8 @@
 
 A secure, web-based Voice Authentication System that combines password-based authentication, voice biometrics, and security question verification to provide a robust user authentication mechanism. Users register with their voice samples, answer security questions, and authenticate using voice recognition powered by machine learning. This project was developed as a final-year project to demonstrate advanced concepts in web development, audio processing, and machine learning.
 
+This project implements a voice-based authentication system that integrates speaker recognition, speech content verification, and text-based password validation. It leverages deep learning models for speaker identification and speech classification, with a SQLite database to manage user data, audio samples, and voice embeddings.
+
 ---
 
  <p align="center">
@@ -32,7 +34,15 @@ The Voice Authentication System enhances traditional password-based login system
 
 ---
 
-## Features
+## ✨ Features
+- **User Registration**: Create accounts with unique IDs, passwords, security questions, and voice samples.  
+- **Login Authentication**: Verify users via password and voice-based answers to security questions.  
+- **Forgot Password**: Recover accounts by answering security questions with voice verification.  
+- **Password Reset**: Securely update passwords after verification.  
+- **Speaker Recognition**: Uses SpeechBrain's ECAPA-TDNN for voice embedding generation.  
+- **Speech Classification**: Trains a custom CNN to classify spoken answers.  
+- **Text Verification**: Validates typed and spoken answers using text similarity.  
+- **Audio Processing**: Converts audio to mel-spectrograms and applies augmentation (noise, pitch shift). 
 
 ### 🔐 User Registration:
 - Unique user ID and strong password.
@@ -149,30 +159,94 @@ The Voice Authentication System enhances traditional password-based login system
 
 ---
 
-## Usage
+## 📝 Usage
 
-### 🏠 Home Page
-- Choose **Register**, **Login**, or **Forgot Password**.
+### 1. Initialize the System
+```python
+from voice_auth import VoiceAuth
+auth = VoiceAuth()
+```
 
-### 📝 Registration
-- Provide user ID and password.
-- Choose 3 questions and record 10 samples each.
-- Submit and complete setup.
+### 2. Register a User
+```python
+user_id = "test_user"
+password = "SecurePass123!"
+questions = ["What is your favorite color?", "What is your pet's name?", "What is your birthplace?"]
+answers = [["Blue"], ["Max"], ["New York"]]
+audio_files = [
+    ["path/to/audio1.wav", ..., "path/to/audio10.wav"],
+    ["path/to/audio11.wav", ..., "path/to/audio20.wav"],
+    ["path/to/audio21.wav", ..., "path/to/audio30.wav"]
+]
+success, message = auth.register(user_id, password, questions, answers, audio_files)
+print(message)
+```
 
-### 🔐 Login
-- Enter user ID and password.
-- Answer 3 questions with voice.
-- Get redirected to the dashboard on success.
+### 3. Login
+```python
+success, message, questions = auth.login(user_id, password)
+if success:
+    print("Login successful. Answer the following questions:", questions)
+else:
+    print(message)
+```
 
-### 🔁 Forgot Password
-- Verify identity with voice.
-- Set a new password after successful verification.
+### 4. Verify Answers (Login or Forgot Password)
+```python
+answers = ["Blue", "Max", "New York"]
+audio_files = ["path/to/login_audio1.wav", "path/to/login_audio2.wav", "path/to/login_audio3.wav"]
+success, message = auth.verify(user_id, answers, audio_files, is_login=True)
+print(message)
+```
 
-### 📋 Dashboard
-- View user ID and logout option.
+### 5. Reset Password
+```python
+new_password = "NewSecurePass123!"
+success, message = auth.reset_password(user_id, new_password)
+print(message)
+```
 
-### 🌗 Theme Toggle
-- Switch between dark and light modes.
+## 🗄️ Database Schema
+- **users**: Stores user ID and password.  
+- **questions**: Stores security questions per user.  
+- **answers**: Stores answers to security questions.  
+- **audio_samples**: Stores paths to audio samples (registration/login).  
+- **embeddings**: Stores serialized voice embeddings.  
+- **user_mapping**: Maps user IDs to unique labels for classification.
+
+## 🎙️ Audio Processing
+- **Sample Rate**: 22,050 Hz  
+- **Duration**: 5 seconds per sample  
+- **Mel-Spectrograms**: 64 mel bands, 1024 FFT, 512 hop length  
+- **Augmentation**: Noise addition and pitch shifting for training  
+- **Energy Threshold**: 0.0001 to filter silent audio  
+
+## 🤖 Models
+- **Speaker Recognition**: SpeechBrain's pre-trained ECAPA-TDNN (`spkrec-ecapa-voxceleb`) for voice embeddings.  
+- **Speech CNN**: Custom per-user CNN for answer classification:
+  - 2 Conv2D layers (8 and 16 filters)
+  - MaxPooling layers
+  - Dense layers with dropout
+  - Softmax output for 3 question classes
+
+## 🔒 Security
+- **Password Requirements**: Minimum 8 characters, including uppercase, lowercase, numbers, and special characters.  
+- **Voice Verification**:
+  - Cosine similarity ≥ 0.55 for voice embeddings  
+  - Speech CNN confidence ≥ 0.7 for answer classification  
+  - Text similarity ≥ 0.9 for typed/spoken answers  
+
+- **Login**: Requires 2/3 correct answers  
+- **Password Reset**: Requires 3/3 correct answers
+
+## 📜 Logging
+- Stored in `voice_auth.log` with timestamp, level, and message.  
+- Tracks registration, login, verification, and errors.
+
+## ⚠️ Limitations
+- Requires internet for Google Speech-to-Text API.  
+- Audio quality impacts verification accuracy.  
+- Minimum 10 audio samples per question for registration.
 
 ---
 
@@ -237,18 +311,19 @@ The Voice Authentication System enhances traditional password-based login system
 - 📊 Track login attempts with analytics  
 - 🚀 Optimize ECAPA-TDNN or use lightweight alternatives  
 - 🛠️ Admin panel for user logs  
-- 🎙️ Real-time audio feedback with progress indicators  
+- 🎙️ Real-time audio feedback with progress indicators
+---
 
-## License
+##📜 License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
 
-## Contact
+##📬 Contact
 
 - **Author:** K. Lokesh Kumar
 - **Email:** lokeshkumarkona07@gmail.com  
 - **LinkedIn:** (https://www.linkedin.com/in/kona-lokesh-kumar-57b658344)
 
-_For feedback or questions, raise an issue or reach out via email._
+⭐ Star this repository if you find it useful!
 
 Thanks for checking out the Voice Authentication System! 🚀  
