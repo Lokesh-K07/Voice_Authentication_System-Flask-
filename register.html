@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Voice Authentication</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Register</h1>
+        <button id="theme-toggle">🌙</button>
+    </header>
+    <main>
+        <div class="form-container">
+            <form id="userDetailsForm">
+                <h2>User Details</h2>
+                <input type="text" id="user_id" name="user_id" placeholder="User ID" required>
+                <input type="password" id="password" name="password" placeholder="Password (8+ chars, 1 uppercase, 1 lowercase, 1 special char, 1 number)" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                <div id="password-strength" class="status"></div> <!-- Added password strength indicator -->
+                <button type="submit" class="btn">Next</button>
+                <button type="button" class="cancel-btn" onclick="handleCancel('')">Cancel</button>
+                <p id="reg-message"></p>
+            </form>
+
+            <div id="securityQuestionsSection" style="display: none;">
+                <h2>Security Questions</h2>
+                <h3>Select 3 Questions</h3>
+                <div class="question-list">
+                    {% for question in [
+                        "What is your favorite color?", "What is your favorite food?", "What is your favorite place to visit?",
+                        "What is your favorite season?", "What is your favorite festival?", "What is your favorite chocolate?",
+                        "What is your favorite movie?", "Who is your favorite cricketer?", "What is your favorite hobby?",
+                        "What is your favorite fruit?"
+                    ] %}
+                    <div class="question-item" data-question="{{ question }}">{{ question }}</div>
+                    {% endfor %}
+                </div>
+
+                <form id="registerForm">
+                    <input type="hidden" id="reg_user_id" name="user_id">
+                    <input type="hidden" id="reg_password" name="password">
+                    {% for i in range(3) %}
+                    <div class="question-container {{ 'visible' if i == 0 else 'hidden' }}" id="question-container-{{ i }}">
+                        <p id="question-text-{{ i }}"></p>
+                        <input type="hidden" name="question_{{ i+1 }}" id="question_{{ i+1 }}">
+                        <input type="password" name="answer_{{ i+1 }}" id="answer_{{ i+1 }}" placeholder="Your Answer" required>
+                        <div class="gif-container">
+                            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWVyaGV6djhqeGQzZHlpNzducnpjYmp2dGtrZTd2ajBndGpxdDc0ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/i41bfUccKaQMVr6T0R/giphy.gif" alt="Recording GIF">
+                        </div>
+                        <p class="sample-counter" id="sample-counter-{{ i }}">Samples Recorded: 0/10</p>
+                        <div class="recording-wrapper">
+                            <button type="button" class="start-recording" data-index="{{ i }}">Start Recording</button>
+                            <button type="button" class="reset-audio" data-index="{{ i }}">Reset Audio</button>
+                            <span class="recording-indicator">🔴</span>
+                        </div>
+                        <p class="status" id="recordingStatus_{{ i }}">Not recording</p>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn">Register</button>
+                    <button type="button" class="cancel-btn" onclick="handleCancel('')">Cancel</button>
+                </form>
+            </div>
+        </div>
+        <div id="loading-screen" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

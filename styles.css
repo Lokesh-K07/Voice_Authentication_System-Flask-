@@ -1,0 +1,1046 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.5s ease;
+    padding: 20px;
+}
+
+/* Dark Mode for Body */
+body.dark {
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+}
+
+/* Header Styling */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+/* Header Title */
+header h1 {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Dark Mode for Header Title */
+body.dark header h1 {
+    color: #ddd;
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Toggle Hover Effect */
+#theme-toggle:hover {
+    transform: rotate(180deg);
+    color: #74ebd5;
+}
+
+/* Dark Mode for Theme Toggle */
+body.dark #theme-toggle {
+    color: #acb6e5;
+}
+
+/* Dark Mode Theme Toggle Hover */
+body.dark #theme-toggle:hover {
+    color: #74ebd5;
+}
+
+/* Main Container */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 80px;
+}
+
+/* Form Container Styling */
+.form-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Dark Mode for Form Container */
+body.dark .form-container {
+    background: rgba(50, 50, 50, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Container Hover Effect */
+.form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Container Title */
+.form-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
+}
+
+/* Dark Mode for Form Container Title */
+body.dark .form-container h2 {
+    color: #fff;
+}
+
+/* Form Container Subtitle */
+.form-container h3 {
+    color: #555;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Dark Mode for Subtitle */
+body.dark .form-container h3 {
+    color: #ddd;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="password"] {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: #fff;
+    color: #333;
+}
+
+/* Input Fields Focus State */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #74ebd5;
+    box-shadow: 0 0 8px rgba(116, 235, 213, 0.3);
+    outline: none;
+}
+
+/* Input Fields Hover State */
+input[type="text"]:hover,
+input[type="password"]:hover {
+    border-color: #acb6e5;
+}
+
+/* Dark Mode for Input Fields */
+body.dark input[type="text"],
+body.dark input[type="password"] {
+    background: #444;
+    color: #fff;
+    border-color: #666;
+}
+
+/* Dark Mode Input Fields Focus */
+body.dark input[type="text"]:focus,
+body.dark input[type="password"]:focus {
+    border-color: #acb6e5;
+    box-shadow: 0 0 8px rgba(172, 182, 229, 0.3);
+}
+
+/* Input Fields Placeholder */
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Dark Mode Placeholder */
+body.dark input[type="text"]::placeholder,
+body.dark input[type="password"]::placeholder {
+    color: #bbb;
+}
+
+/* Password Strength Indicator */
+#password-strength.weak {
+    color: #e74c3c; /* Red for weak */
+}
+
+#password-strength.medium {
+    color: #f1c40f; /* Yellow for medium */
+}
+
+#password-strength.strong {
+    color: #2ecc71; /* Green for strong */
+}
+
+body.dark #password-strength.weak {
+    color: #ff6b6b; /* Lighter red for dark mode */
+}
+
+body.dark #password-strength.medium {
+    color: #f1c40f; /* Same yellow for visibility */
+}
+
+body.dark #password-strength.strong {
+    color: #27ae60; /* Darker green for dark mode */
+}
+
+/* Button Container */
+.form-container > div {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* General Button Styling */
+.btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.5s ease;
+    text-decoration: none;
+}
+
+/* Button Hover Effect */
+.btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #acb6e5, #74ebd5);
+}
+
+/* Dark Mode for Button */
+body.dark .btn {
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+}
+
+/* Dark Mode Button Hover */
+body.dark .btn:hover {
+    background: linear-gradient(135deg, #4ca1af, #2c3e50);
+}
+
+/* Cancel Button Styling */
+.cancel-btn {
+    background: #ff6b6b;
+    padding: 12px 30px;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.5s ease;
+}
+
+/* Cancel Button Hover */
+.cancel-btn:hover {
+    background: #ff8787;
+    transform: scale(1.05);
+}
+
+/* Dark Mode for Cancel Button */
+body.dark .cancel-btn {
+    background: #e74c3c;
+}
+
+/* Dark Mode Cancel Button Hover */
+body.dark .cancel-btn:hover {
+    background: #ff6b6b;
+}
+
+/* Disabled Button Styling */
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Dark Mode for Disabled Button */
+body.dark button:disabled {
+    background: #666;
+}
+
+/* GIF Container */
+.gif-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* GIF Image Styling */
+.gif-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* GIF Image Hover Effect */
+.gif-container img:hover {
+    transform: scale(1.1);
+}
+
+/* Dark Mode for GIF Container */
+body.dark .gif-container img {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Question List Container */
+.question-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 15px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+/* Dark Mode for Question List */
+body.dark .question-list {
+    border-color: #666;
+}
+
+/* Question List Hover Effect */
+.question-list:hover {
+    border-color: #74ebd5;
+}
+
+/* Dark Mode Question List Hover */
+body.dark .question-list:hover {
+    border-color: #acb6e5;
+}
+
+/* Question Item Styling */
+.question-item {
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Dark Mode for Question Item */
+body.dark .question-item {
+    background: #555;
+    color: #fff;
+}
+
+/* Question Item Hover Effect */
+.question-item:hover {
+    background: #e0e0e0;
+    transform: translateY(-3px);
+}
+
+/* Dark Mode Question Item Hover */
+body.dark .question-item:hover {
+    background: #666;
+}
+
+/* Selected Question Item */
+.question-item.selected {
+    background: #74ebd5;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Dark Mode for Selected Question Item */
+body.dark .question-item.selected {
+    background: #acb6e5;
+}
+
+/* Question Container */
+.question-container {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+/* Dark Mode for Question Container */
+body.dark .question-container {
+    background: #444;
+}
+
+/* Question Container Paragraph */
+.question-container p {
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Dark Mode for Question Container Paragraph */
+body.dark .question-container p {
+    color: #ddd;
+}
+
+/* Recording Wrapper */
+.recording-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+/* Recording Buttons */
+.recording-wrapper button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+/* Start Recording Button */
+.recording-wrapper .start-recording {
+    background: #2ecc71;
+    color: #fff;
+}
+
+/* Start Recording Button Hover */
+.recording-wrapper .start-recording:hover {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+/* Start Recording Button Recording State */
+.recording-wrapper .start-recording.recording {
+    background: #e74c3c;
+}
+
+/* Start Recording Button Recording Hover */
+.recording-wrapper .start-recording.recording:hover {
+    background: #c0392b;
+}
+
+/* Dark Mode for Start Recording Button */
+body.dark .recording-wrapper .start-recording {
+    background: #27ae60;
+}
+
+/* Dark Mode Start Recording Button Hover */
+body.dark .recording-wrapper .start-recording:hover {
+    background: #2ecc71;
+}
+
+/* Dark Mode Start Recording Button Recording */
+body.dark .recording-wrapper .start-recording.recording {
+    background: #c0392b;
+}
+
+/* Dark Mode Start Recording Button Recording Hover */
+body.dark .recording-wrapper .start-recording.recording:hover {
+    background: #e74c3c;
+}
+
+/* Recording Indicator */
+.recording-indicator {
+    display: none;
+    font-size: 1.2rem;
+    animation: blink 1s infinite;
+}
+
+/* Show Recording Indicator When Recording */
+button.recording + .recording-indicator {
+    display: inline;
+}
+
+/* Sample Counter */
+.sample-counter {
+    font-size: 1rem;
+    color: #666;
+    margin: 10px 0;
+    transition: color 0.3s ease;
+}
+
+/* Dark Mode for Sample Counter */
+body.dark .sample-counter {
+    color: #bbb;
+}
+
+/* Sample Counter Hover Effect */
+.sample-counter:hover {
+    color: #333;
+}
+
+/* Dark Mode Sample Counter Hover */
+body.dark .sample-counter:hover {
+    color: #fff;
+}
+
+/* Progress Bar Container (Removed from registration, kept for reference) */
+.progress-bar {
+    width: 100%;
+    max-width: 300px;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar Fill */
+.progress {
+    width: 0;
+    height: 100%;
+    background: #74ebd5;
+    transition: width 0.5s ease;
+}
+
+/* Dark Mode for Progress Bar Container */
+body.dark .progress-bar {
+    background: #666;
+}
+
+/* Dark Mode for Progress Bar Fill */
+body.dark .progress {
+    background: #acb6e5;
+}
+
+/* Spinner for Login */
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #74ebd5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+body.dark .loader {
+    border: 5px solid #666;
+    border-top: 5px solid #acb6e5;
+}
+
+/* Status Messages */
+.status,
+#reg-message,
+#login-message,
+#forgot-message {
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Success Message */
+.success {
+    color: #2ecc71;
+}
+
+/* Error Message */
+.error {
+    color: #e74c3c;
+}
+
+/* Forgot Password Link */
+.forgot-password-link {
+    display: block;
+    margin-top: 15px;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Forgot Password Link Hover */
+.forgot-password-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+    transform: translateX(5px);
+}
+
+/* Dark Mode for Forgot Password Link */
+body.dark .forgot-password-link {
+    color: #74ebd5;
+}
+
+/* Dark Mode Forgot Password Link Hover */
+body.dark .forgot-password-link:hover {
+    color: #acb6e5;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Fade In Animation for Elements */
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Slide In Animation for Buttons */
+.btn-slide {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive Design for Large Screens */
+@media (min-width: 1200px) {
+    .form-container {
+        max-width: 800px;
+        padding: 50px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 15px 40px;
+        font-size: 1.2rem;
+    }
+
+    .question-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .gif-container img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Responsive Design for Medium Screens */
+@media (max-width: 1024px) {
+    .form-container {
+        max-width: 700px;
+        padding: 30px;
+    }
+
+    header {
+        padding: 15px 30px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        font-size: 0.95rem;
+    }
+
+    .question-list {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .gif-container img {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    header {
+        padding: 10px 20px;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    #theme-toggle {
+        font-size: 1.3rem;
+    }
+
+    .question-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .cancel-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .gif-container img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .recording-wrapper button {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    .form-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-container h3 {
+        font-size: 1rem;
+    }
+
+    form {
+        gap: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    header {
+        padding: 10px 15px;
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    #theme-toggle {
+        font-size: 1.2rem;
+    }
+
+    .question-list {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        padding: 10px;
+    }
+
+    .question-item {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .cancel-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .gif-container img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .recording-wrapper {
+        gap: 8px;
+    }
+
+    .recording-wrapper button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .recording-indicator {
+        font-size: 1rem;
+    }
+
+    .sample-counter {
+        font-size: 0.9rem;
+    }
+
+    .status,
+    #reg-message,
+    #login-message,
+    #forgot-message {
+        font-size: 0.9rem;
+    }
+
+    .forgot-password-link {
+        font-size: 0.85rem;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 360px) {
+    .form-container {
+        padding: 10px;
+    }
+
+    .form-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-container h3 {
+        font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    header {
+        padding: 8px 10px;
+    }
+
+    header h1 {
+        font-size: 1rem;
+    }
+
+    #theme-toggle {
+        font-size: 1rem;
+    }
+
+    .question-list {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        padding: 8px;
+    }
+
+    .question-item {
+        font-size: 0.75rem;
+        padding: 6px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .cancel-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .gif-container img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .recording-wrapper button {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .recording-indicator {
+        font-size: 0.9rem;
+    }
+
+    .sample-counter {
+        font-size: 0.85rem;
+    }
+
+    .status,
+    #reg-message,
+    #login-message,
+    #forgot-message {
+        font-size: 0.85rem;
+    }
+
+    .forgot-password-link {
+        font-size: 0.8rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: none;
+    }
+
+    header {
+        display: none;
+    }
+
+    .form-container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .btn,
+    .cancel-btn,
+    .recording-wrapper,
+    .gif-container,
+    .progress-bar,
+    .recording-indicator {
+        display: none;
+    }
+
+    .question-list {
+        border: 1px solid #000;
+    }
+}
+
+/* Existing styles */
+.btn, .start-recording, .reset-audio, .cancel-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.start-recording {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.start-recording.recording {
+    background-color: #ff4444; /* Red when recording */
+}
+
+.reset-audio {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #ff7d74; /* Gray */
+    color: white;
+    text-decoration: none; /* Ensure no underline */
+}
+
+.recording-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons and indicator */
+}
+
+button.cancel-btn {
+    text-decoration: none;
+}
+
+/* Updated loading screen styles (only spinner) */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #f3f3f3; /* Light gray */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
