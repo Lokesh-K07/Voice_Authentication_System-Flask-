@@ -238,9 +238,9 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 
 ## Contact
 
-**Author:** K. Lokesh Kumar
-**Email:** lokeshkumarkona07@gmail.com  
-**LinkedIn:** (https://www.linkedin.com/in/kona-lokesh-kumar-57b658344)
+- **Author:** K. Lokesh Kumar
+- **Email:** lokeshkumarkona07@gmail.com  
+- **LinkedIn:** (https://www.linkedin.com/in/kona-lokesh-kumar-57b658344)
 
 _For feedback or questions, raise an issue or reach out via email._
 
