@@ -1,5 +1,5 @@
 
-# Voice Authentication System
+# 🎙️ Voice Authentication System
 
  <p align="center">
      <img src="main.jpg" alt="main" height="300" width="400">
@@ -17,7 +17,7 @@ This project implements a voice-based authentication system that integrates spea
 
 ---
 
-## Project Overview
+## 📖 Project Overview
  <p align="center">
      <img src="main1.png" alt="main1" height="300" width="500">
    </p>
@@ -26,7 +26,7 @@ The Voice Authentication System enhances traditional password-based login system
 
 ---
 
-### Highlights:
+## ✨ Highlights:
 
 - **Web Development**: Flask-based responsive web application.  
 - **Audio Processing**: Real-time audio handling via `SpeechRecognition` and `Librosa`.  
@@ -76,7 +76,7 @@ The Voice Authentication System enhances traditional password-based login system
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend:
 - Python 3.8  
@@ -99,7 +99,7 @@ The Voice Authentication System enhances traditional password-based login system
 
 ---
 
-## Installation
+## 🚀 Installation
 
 ### Prerequisites
 - Python 3.8+  
@@ -252,7 +252,7 @@ print(message)
 
 ---
 
-## Screenshots
+## 🖼️ Screenshots
 
 - Home Page
      <p align="center">
@@ -283,7 +283,7 @@ print(message)
 
 ---
 
-## Challenges and Solutions
+## ⚙️ Challenges and Solutions
 
 **Challenge:** Accurate voice recognition in noisy environments.  
 **Solution:** Implemented ambient noise adjustment using SpeechRecognition’s `adjust_for_ambient_noise` and an energy threshold check (`ENERGY_THRESHOLD = 0.0001`) to filter out silent recordings.
@@ -302,7 +302,7 @@ print(message)
 
 ---
 
-## Future Improvements
+## 🔮 Future Improvements
 
 - 🔐 Password hashing with bcrypt  
 - 🔑 Add OTP-based MFA (email/SMS)  
