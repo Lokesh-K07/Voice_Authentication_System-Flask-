@@ -316,11 +316,11 @@ print(message)
 - 🎙️ Real-time audio feedback with progress indicators
 ---
 
-##📜 License
+## 📜License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
 
-##📬 Contact
+## 📬Contact
 
 - **Author:** K. Lokesh Kumar
 - **Email:** lokeshkumarkona07@gmail.com  
