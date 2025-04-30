@@ -178,8 +178,6 @@ The Voice Authentication System enhances traditional password-based login system
 
 ## Screenshots
 
-_Replace placeholders with real screenshots:_
-
 - Home Page
      <p align="center">
   <img src="1.png" alt="1" height="300" width="600">
