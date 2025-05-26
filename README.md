@@ -275,7 +275,7 @@ print(message)
    <p align="center">
      <img src="fp.png" alt="6" height="300" width="600">
    </p>
-- Dashboard  
+- Success
    <p align="center">
      <img src="welcome.png" alt="7" height="300" width="600">
    </p>
