@@ -319,6 +319,8 @@ print(message)
 
 This project is licensed under the [Apache License 2.0](LICENSE).
 
+---
+
 ## 📬Contact
 
 - **Author:** K. Lokesh Kumar
