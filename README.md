@@ -325,7 +325,7 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 
 - **Author:** K. Lokesh Kumar
 - **Email:** lokeshkumarkona07@gmail.com  
-- **LinkedIn:** (https://www.linkedin.com/in/kona-lokesh-kumar-57b658344)
+- **LinkedIn:** Lokesh Kumar Kona
 
 ⭐ Star this repository if you find it useful!
 
